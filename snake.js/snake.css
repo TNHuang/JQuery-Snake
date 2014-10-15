@@ -1,0 +1,34 @@
+html, body, ul, li {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.group:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+ul.group {
+  display: block;
+  width: 1000px;
+}
+
+li {
+  width: 5px;
+  height: 5px;
+  background: #DDD;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+ul.col {
+  width: 6px;
+  display: block;
+  float: left;
+}
+
+li.snake {
+  background: green;
+}
