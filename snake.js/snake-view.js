@@ -4,12 +4,19 @@
   }
 
   var View = SnakeGame.View = function($el) {
-    this.board = new SnakeGame.Board();
+    var height = 25;
+    var width = 25;
+
+    this.board = new SnakeGame.Board({height: height, width: width});
     this.el = $el;
     this.bindEvents();
-    this.setUpBoard();
-    this.stepIntervalId = setInterval(this.step.bind(this), 2000);
+    this.setUpBoard( {height: height, width: width} );
+    this.stepIntervalId = setInterval(this.step.bind(this), 300);
+    this.appleSpawn = setInterval(function() {
+      this.board.newApple();
+    }.bind(this), 5000);
 
+    this.render();
   }
 
   View.prototype.bindEvents = function () {
@@ -46,8 +53,9 @@
     this.board.snake.move();
     this.render();
     if (this.board.lost()) {
-      alert("you lose good day sir");
+      $('.game-over').removeClass('hidden');
       clearInterval(this.stepIntervalId);
+      clearInterval(this.appleSpawn);
     }
   };
 
@@ -55,21 +63,38 @@
     var $listItem = $('li');
     $listItem.removeClass();
 
-    this.board.snake.segments.forEach(function (segment) {
-      $("ul.col:nth-child(" + (segment.x() + 1) + ") li:nth-child(" + (segment.y() + 1) + ")").addClass('snake');
+
+    $('.score').html("Score: "+ this.board.score);
+    this.board.apples.forEach( function(apple){
+      $("ul.col:nth-child(" + (apple.x + 1) + ") li:nth-child(" + (apple.y + 1) + ")").addClass('apple');
     })
+
+    var segments = this.board.snake.segments;
+    var headIndex = this.board.snake.snakeHeadIndex;
+
+    segments.forEach(function (segment) {
+      if (segments.indexOf(segment) == headIndex ){
+        var picClass = 'snakehead';
+        drawSnakeHead = true;
+      } else {
+        var picClass = 'snake'
+      }
+      $("ul.col:nth-child(" + (segment.x + 1) + ") li:nth-child(" + (segment.y + 1) + ")").addClass(picClass);
+    })
+
 
   };
 
-  View.prototype.setUpBoard = function () {
-    for (var i = 0; i < 50; i++) {
+  View.prototype.setUpBoard = function (options) {
+    var height = options.height;
+    var width = options.width;
 
+    for (var i = 0; i < height; i++) {
       this.el.append("<ul class='col'>");
-      for (var j = 0; j < 50; j++) {
+      for (var j = 0; j < width; j++) {
         $('ul:last').append("<li></li>");
       }
     }
 
   };
 })();
-

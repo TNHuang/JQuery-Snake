@@ -11,15 +11,33 @@
 </head>
 
   <body>
-    <ul class="group">
+    <h1>~<:<<<<<></h1>
 
-    </ul>
+
+    <div class='menu-group'>
+      <div class='score'></div>
+      <div class="game-over group hidden">
+        <br><button>play again?</button>
+      </div>
+    </div>
+
+    <div class='board-container'>
+      <ul class="group">
+
+      </ul>
+    </div>
+
 
 
     <script>
     $(document).ready(function(){
       var $el = $('ul')
       var newView = new SnakeGame.View($el);
+      $('button').on("click", function () {
+
+        window.location.reload();
+      });
+
     });
     </script>
 
